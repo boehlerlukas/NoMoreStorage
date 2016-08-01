@@ -14,6 +14,7 @@
 		F6B5F3ED1D4F818B00142BF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F6B5F3EB1D4F818B00142BF7 /* LaunchScreen.storyboard */; };
 		F6B5F3F81D4F818B00142BF7 /* NoMoreStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B5F3F71D4F818B00142BF7 /* NoMoreStorageTests.swift */; };
 		F6B5F4031D4F818B00142BF7 /* NoMoreStorageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6B5F4021D4F818B00142BF7 /* NoMoreStorageUITests.swift */; };
+		F6DEFE3C1D4F9CE300CA7560 /* alotof.shit in Resources */ = {isa = PBXBuildFile; fileRef = F6DEFE3B1D4F9CE300CA7560 /* alotof.shit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		F6B5F3FE1D4F818B00142BF7 /* NoMoreStorageUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoMoreStorageUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6B5F4021D4F818B00142BF7 /* NoMoreStorageUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoMoreStorageUITests.swift; sourceTree = "<group>"; };
 		F6B5F4041D4F818B00142BF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F6DEFE3B1D4F9CE300CA7560 /* alotof.shit */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = alotof.shit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				F6B5F3E91D4F818B00142BF7 /* Assets.xcassets */,
 				F6B5F3EB1D4F818B00142BF7 /* LaunchScreen.storyboard */,
 				F6B5F3EE1D4F818B00142BF7 /* Info.plist */,
+				F6DEFE3B1D4F9CE300CA7560 /* alotof.shit */,
 			);
 			path = NoMoreStorage;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 			files = (
 				F6B5F3ED1D4F818B00142BF7 /* LaunchScreen.storyboard in Resources */,
 				F6B5F3EA1D4F818B00142BF7 /* Assets.xcassets in Resources */,
+				F6DEFE3C1D4F9CE300CA7560 /* alotof.shit in Resources */,
 				F6B5F3E81D4F818B00142BF7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

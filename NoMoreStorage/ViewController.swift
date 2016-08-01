@@ -59,21 +59,18 @@ class ViewController: UIViewController {
         self.writeBullshit = true
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            // write file.
-            let shit = "💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩"
-            let documents = try! NSFileManager.defaultManager().URLForDirectory(.DocumentDirectory, inDomain: .UserDomainMask, appropriateForURL: nil, create: false)
-            let path = documents.URLByAppendingPathComponent("big.bullshit").path!
-            
-            if let outputStream = NSOutputStream(toFileAtPath: path, append: true) {
-                outputStream.open()
-                
-                while self.writeBullshit {
-                    outputStream.write(shit)
+            let docsDir = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0]
+            let fileMgr = NSFileManager.defaultManager()
+            while self.writeBullshit {
+                let diceRoll = Int(arc4random_uniform(10000) + 1)
+                let destPath = (docsDir as NSString).stringByAppendingPathComponent("/alotof_\(diceRoll).shit")
+                if let path = NSBundle.mainBundle().pathForResource("alotof", ofType:"shit") {
+                    do {
+                        try fileMgr.copyItemAtPath(path, toPath: destPath)
+                    } catch _ {
+                        
+                    }
                 }
-                
-                outputStream.close()
-            } else {
-                print("Unable to open file")
             }
         }
     }
