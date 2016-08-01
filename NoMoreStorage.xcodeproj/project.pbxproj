@@ -193,6 +193,7 @@
 				TargetAttributes = {
 					F6B5F3DE1D4F818B00142BF7 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 7UGU2CH934;
 					};
 					F6B5F3F21D4F818B00142BF7 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -401,10 +402,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lukas Boehler (UDDQUTTHQ9)";
 				INFOPLIST_FILE = NoMoreStorage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = at.appwerkstatt.net.NoMoreStorage;
+				PRODUCT_BUNDLE_IDENTIFIER = at.nomorespace.cool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3def8378-90ac-4058-b57b-68a48daa00a2";
 			};
 			name = Debug;
 		};
@@ -412,10 +415,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Lukas Boehler (UDDQUTTHQ9)";
 				INFOPLIST_FILE = NoMoreStorage/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = at.appwerkstatt.net.NoMoreStorage;
+				PRODUCT_BUNDLE_IDENTIFIER = at.nomorespace.cool;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "3def8378-90ac-4058-b57b-68a48daa00a2";
 			};
 			name = Release;
 		};
@@ -484,6 +489,7 @@
 				F6B5F4091D4F818B00142BF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F6B5F40A1D4F818B00142BF7 /* Build configuration list for PBXNativeTarget "NoMoreStorageTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +498,7 @@
 				F6B5F40C1D4F818B00142BF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F6B5F40D1D4F818B00142BF7 /* Build configuration list for PBXNativeTarget "NoMoreStorageUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +507,7 @@
 				F6B5F40F1D4F818B00142BF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

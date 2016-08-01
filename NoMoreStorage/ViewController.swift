@@ -34,6 +34,10 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    @IBAction func hideKeyboard(sender: AnyObject) {
+        sender.resignFirstResponder()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -44,7 +48,7 @@ class ViewController: UIViewController {
         let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
         if let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath(documentDirectoryPath.last!) {
             if let freeSize = systemAttributes[NSFileSystemFreeSize] as? NSNumber {
-                return (Int(freeSize.longLongValue) / 1000000)
+                return Int(Double(freeSize.longLongValue) / 1000000.0)
             }
         }
         // something failed
