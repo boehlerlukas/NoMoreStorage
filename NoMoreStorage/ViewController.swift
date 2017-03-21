@@ -11,14 +11,28 @@ import UIKit
 class ViewController: UIViewController {
     @IBOutlet weak var freeStorageLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var flushButton: UIButton!
     @IBOutlet weak var aimedFreeStorage: UITextField!
     
-    var writeBullshit = false
+    var writeBullshit = false {
+        didSet {
+            let title = writeBullshit ? "🛑" : "💩"
+            self.startButton.setTitle(title, forState: .Normal)
+        }
+    }
+
+    var flushBullshit = false {
+        didSet {
+            let title = flushBullshit ? "🛑" : "🚽"
+            self.flushButton.setTitle(title, forState: .Normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         startButton.layer.cornerRadius = 3.0
+        flushButton.layer.cornerRadius = 3.0
         aimedFreeStorage.layer.cornerRadius = 3.0
         _ = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -56,7 +70,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func startWrittingBullshit() {
-        self.writeBullshit = true
+        self.flushBullshit = false
+        self.writeBullshit = !self.writeBullshit
+
         let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
         dispatch_async(dispatch_get_global_queue(priority, 0)) {
             let docsDir = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0]
@@ -72,6 +88,36 @@ class ViewController: UIViewController {
                     }
                 }
             }
+        }
+    }
+
+    @IBAction func startFlushingBullshit() {
+        self.writeBullshit = false
+        self.flushBullshit = !self.flushBullshit
+
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        dispatch_async(dispatch_get_global_queue(priority, 0)) {
+            let docsDir = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0]
+            let fileMgr = NSFileManager.defaultManager()
+            if let dirEnum = fileMgr.enumeratorAtPath(docsDir) {
+                while let file = dirEnum.nextObject() as? String where self.flushBullshit {
+                    if file.hasSuffix("shit") && file.containsString("alotof_") {
+                        let filePath = docsDir.stringByAppendingString("/\(file)")
+                        do {
+                            try fileMgr.removeItemAtPath(filePath)
+                        } catch _ {
+
+                        }
+
+                        usleep(500000)
+                    }
+                }
+
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.flushBullshit = false
+                })
+            }
+
         }
     }
 }
