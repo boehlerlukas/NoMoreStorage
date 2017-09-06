@@ -17,14 +17,14 @@ class ViewController: UIViewController {
     var writeBullshit = false {
         didSet {
             let title = writeBullshit ? "🛑" : "💩"
-            self.startButton.setTitle(title, forState: .Normal)
+            self.startButton.setTitle(title, for: UIControlState())
         }
     }
 
     var flushBullshit = false {
         didSet {
             let title = flushBullshit ? "🛑" : "🚽"
-            self.flushButton.setTitle(title, forState: .Normal)
+            self.flushButton.setTitle(title, for: UIControlState())
         }
     }
     
@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         startButton.layer.cornerRadius = 3.0
         flushButton.layer.cornerRadius = 3.0
         aimedFreeStorage.layer.cornerRadius = 3.0
-        _ = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+        _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
     
     func update() {
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func hideKeyboard(sender: AnyObject) {
+    @IBAction func hideKeyboard(_ sender: AnyObject) {
         sender.resignFirstResponder()
     }
 
@@ -59,10 +59,10 @@ class ViewController: UIViewController {
     }
     
     func deviceRemainingFreeSpaceInMBytes() -> Int? {
-        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        if let systemAttributes = try? NSFileManager.defaultManager().attributesOfFileSystemForPath(documentDirectoryPath.last!) {
-            if let freeSize = systemAttributes[NSFileSystemFreeSize] as? NSNumber {
-                return Int(Double(freeSize.longLongValue) / 1000000.0)
+        let documentDirectoryPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        if let systemAttributes = try? FileManager.default.attributesOfFileSystem(forPath: documentDirectoryPath.last!) {
+            if let freeSize = systemAttributes[FileAttributeKey.systemFreeSize] as? NSNumber {
+                return Int(Double(freeSize.int64Value) / 1000000.0)
             }
         }
         // something failed
@@ -73,16 +73,16 @@ class ViewController: UIViewController {
         self.flushBullshit = false
         self.writeBullshit = !self.writeBullshit
 
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            let docsDir = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0]
-            let fileMgr = NSFileManager.defaultManager()
+        let priority = DispatchQueue.GlobalQueuePriority.default
+        DispatchQueue.global(priority: priority).async {
+            let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
+            let fileMgr = FileManager.default
             while self.writeBullshit {
                 let diceRoll = Int(arc4random_uniform(10000) + 1)
-                let destPath = (docsDir as NSString).stringByAppendingPathComponent("/alotof_\(diceRoll).shit")
-                if let path = NSBundle.mainBundle().pathForResource("alotof", ofType:"shit") {
+                let destPath = (docsDir as NSString).appendingPathComponent("/alotof_\(diceRoll).shit")
+                if let path = Bundle.main.path(forResource: "alotof", ofType:"shit") {
                     do {
-                        try fileMgr.copyItemAtPath(path, toPath: destPath)
+                        try fileMgr.copyItem(atPath: path, toPath: destPath)
                     } catch _ {
                         
                     }
@@ -95,16 +95,16 @@ class ViewController: UIViewController {
         self.writeBullshit = false
         self.flushBullshit = !self.flushBullshit
 
-        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
-        dispatch_async(dispatch_get_global_queue(priority, 0)) {
-            let docsDir = NSSearchPathForDirectoriesInDomains(.DocumentDirectory,.UserDomainMask, true)[0]
-            let fileMgr = NSFileManager.defaultManager()
-            if let dirEnum = fileMgr.enumeratorAtPath(docsDir) {
-                while let file = dirEnum.nextObject() as? String where self.flushBullshit {
-                    if file.hasSuffix("shit") && file.containsString("alotof_") {
-                        let filePath = docsDir.stringByAppendingString("/\(file)")
+        let priority = DispatchQueue.GlobalQueuePriority.default
+        DispatchQueue.global(priority: priority).async {
+            let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
+            let fileMgr = FileManager.default
+            if let dirEnum = fileMgr.enumerator(atPath: docsDir) {
+                while let file = dirEnum.nextObject() as? String, self.flushBullshit {
+                    if file.hasSuffix("shit") && file.contains("alotof_") {
+                        let filePath = docsDir + "/\(file)"
                         do {
-                            try fileMgr.removeItemAtPath(filePath)
+                            try fileMgr.removeItem(atPath: filePath)
                         } catch _ {
 
                         }
@@ -113,7 +113,7 @@ class ViewController: UIViewController {
                     }
                 }
 
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.flushBullshit = false
                 })
             }
@@ -122,7 +122,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension NSOutputStream {
+extension OutputStream {
     /// http://stackoverflow.com/questions/26989493/how-to-open-file-and-append-a-string-in-it-swift
     /// Write String to outputStream
     ///
@@ -132,10 +132,10 @@ extension NSOutputStream {
     ///
     /// - returns:                         Return total number of bytes written upon success. Return -1 upon failure.
     
-    func write(string: String, encoding: NSStringEncoding = NSUTF8StringEncoding, allowLossyConversion: Bool = true) -> Int {
-        if let data = string.dataUsingEncoding(encoding, allowLossyConversion: allowLossyConversion) {
-            var bytes = UnsafePointer<UInt8>(data.bytes)
-            var bytesRemaining = data.length
+    func write(_ string: String, encoding: String.Encoding = String.Encoding.utf8, allowLossyConversion: Bool = true) -> Int {
+        if let data = string.data(using: encoding, allowLossyConversion: allowLossyConversion) {
+            var bytes = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
+            var bytesRemaining = data.count
             var totalBytesWritten = 0
             
             while bytesRemaining > 0 {
