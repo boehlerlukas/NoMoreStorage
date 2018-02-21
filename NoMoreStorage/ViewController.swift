@@ -59,15 +59,13 @@ class ViewController: UIViewController {
     }
 
     func fillSpace(_ data: Data = Data(bytes:Array<UInt8>(repeating: 1, count: 512_000_000))) {
+        guard data.count > 0  else { return }
         print("Writing \(data.count) bites...")
         let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
         let destPath = (docsDir as NSString).appendingPathComponent("/alotof_\(NSUUID().uuidString).shit")
         if FileManager.default.createFile(atPath: destPath, contents: data, attributes: nil) {
             fillSpace(data)
         } else {
-            if data.count == 0 {
-                return
-            }
             fillSpace(Data(bytes:Array<UInt8>(repeating: 1, count: data.count / 2)))
         }
     }
