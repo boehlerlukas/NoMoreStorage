@@ -50,7 +50,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func hideKeyboard(_ sender: AnyObject) {
-        sender.resignFirstResponder()
+        _ = sender.resignFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +63,9 @@ class ViewController: UIViewController {
         print("Writing \(data.count) bites...")
         let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
         let destPath = (docsDir as NSString).appendingPathComponent("/alotof_\(NSUUID().uuidString).shit")
+
         if FileManager.default.createFile(atPath: destPath, contents: data, attributes: nil) {
+            destPath.excludeFromBackup()
             fillSpace(data)
         } else {
             fillSpace(Data(bytes:Array<UInt8>(repeating: 1, count: data.count / 2)))
@@ -85,8 +87,7 @@ class ViewController: UIViewController {
         self.flushBullshit = false
         self.writeBullshit = !self.writeBullshit
 
-        let priority = DispatchQueue.GlobalQueuePriority.default
-        DispatchQueue.global(priority: priority).async {
+        DispatchQueue.global(qos: .default).async {
             self.fillSpace()
         }
     }
@@ -95,8 +96,7 @@ class ViewController: UIViewController {
         self.writeBullshit = false
         self.flushBullshit = !self.flushBullshit
 
-        let priority = DispatchQueue.GlobalQueuePriority.default
-        DispatchQueue.global(priority: priority).async {
+        DispatchQueue.global(qos: .default).async {
             let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
             let fileMgr = FileManager.default
             if let dirEnum = fileMgr.enumerator(atPath: docsDir) {
@@ -155,5 +155,14 @@ extension OutputStream {
         return -1
     }
     
+}
+
+private extension String {
+    func excludeFromBackup() {
+        var resourceValues = URLResourceValues()
+        resourceValues.isExcludedFromBackup = true
+        var destURL = URL(fileURLWithPath: self)
+        try! destURL.setResourceValues(resourceValues)
+    }
 }
 
