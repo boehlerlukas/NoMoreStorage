@@ -17,14 +17,14 @@ class ViewController: UIViewController {
     var writeBullshit = false {
         didSet {
             let title = writeBullshit ? "🛑" : "💩"
-            self.startButton.setTitle(title, for: UIControlState())
+            self.startButton.setTitle(title, for: .normal)
         }
     }
 
     var flushBullshit = false {
         didSet {
             let title = flushBullshit ? "🛑" : "🚽"
-            self.flushButton.setTitle(title, for: UIControlState())
+            self.flushButton.setTitle(title, for: .normal)
         }
     }
     
@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func fillSpace(_ data: Data = Data(bytes:Array<UInt8>(repeating: 1, count: 512_000_000))) {
+    func fillSpace(_ data: Data = Data(Array<UInt8>(repeating: 1, count: 512_000_000))) {
         guard data.count > 0  else { return }
         print("Writing \(data.count) bites...")
         let docsDir = NSSearchPathForDirectoriesInDomains(.documentDirectory,.userDomainMask, true)[0]
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
             destPath.excludeFromBackup()
             fillSpace(data)
         } else {
-            fillSpace(Data(bytes:Array<UInt8>(repeating: 1, count: data.count / 2)))
+            fillSpace(Data(Array<UInt8>(repeating: 1, count: data.count / 2)))
         }
     }
 
